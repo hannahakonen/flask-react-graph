@@ -1,0 +1,64 @@
+graph:{
+  title:"packages_spectra"
+  layoutalgorithm:dfs
+  late_edge_labels:yes
+  port_sharing:no
+  manhattan_edges:yes
+  node: {title:"app"  label:"\fbapp\fn"
+  shape:box
+  }
+  node: {title:"app.auth"  label:"\fbapp.auth\fn"
+  shape:box
+  }
+  node: {title:"app.auth.forms"  label:"\fbapp.auth.forms\fn"
+  shape:box
+  }
+  node: {title:"app.auth.views"  label:"\fbapp.auth.views\fn"
+  shape:box
+  }
+  node: {title:"app.decorators"  label:"\fbapp.decorators\fn"
+  shape:box
+  }
+  node: {title:"app.email"  label:"\fbapp.email\fn"
+  shape:box
+  }
+  node: {title:"app.main"  label:"\fbapp.main\fn"
+  shape:box
+  }
+  node: {title:"app.main.errors"  label:"\fbapp.main.errors\fn"
+  shape:box
+  }
+  node: {title:"app.main.forms"  label:"\fbapp.main.forms\fn"
+  shape:box
+  }
+  node: {title:"app.main.views"  label:"\fbapp.main.views\fn"
+  shape:box
+  }
+  node: {title:"app.models"  label:"\fbapp.models\fn"
+  shape:box
+  }
+  edge: {sourcename:"app" targetname:"app.auth"  arrowstyle:solid
+  backarrowstyle:none
+  backarrowsize:0
+  }
+  edge: {sourcename:"app" targetname:"app.main"  arrowstyle:solid
+  backarrowstyle:none
+  backarrowsize:0
+  }
+  edge: {sourcename:"app.auth.views" targetname:"app.auth.forms"  arrowstyle:solid
+  backarrowstyle:none
+  backarrowsize:0
+  }
+  edge: {sourcename:"app.decorators" targetname:"app.models"  arrowstyle:solid
+  backarrowstyle:none
+  backarrowsize:0
+  }
+  edge: {sourcename:"app.main" targetname:"app.models"  arrowstyle:solid
+  backarrowstyle:none
+  backarrowsize:0
+  }
+  edge: {sourcename:"app.main.views" targetname:"app.main.forms"  arrowstyle:solid
+  backarrowstyle:none
+  backarrowsize:0
+  }
+}

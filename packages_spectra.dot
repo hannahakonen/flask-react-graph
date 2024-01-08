@@ -1,0 +1,21 @@
+digraph "packages_spectra" {
+rankdir=BT
+charset="utf-8"
+"app" [color="black", label="app", shape="box", style="solid"];
+"app.auth" [color="black", label="app.auth", shape="box", style="solid"];
+"app.auth.forms" [color="black", label="app.auth.forms", shape="box", style="solid"];
+"app.auth.views" [color="black", label="app.auth.views", shape="box", style="solid"];
+"app.decorators" [color="black", label="app.decorators", shape="box", style="solid"];
+"app.email" [color="black", label="app.email", shape="box", style="solid"];
+"app.main" [color="black", label="app.main", shape="box", style="solid"];
+"app.main.errors" [color="black", label="app.main.errors", shape="box", style="solid"];
+"app.main.forms" [color="black", label="app.main.forms", shape="box", style="solid"];
+"app.main.views" [color="black", label="app.main.views", shape="box", style="solid"];
+"app.models" [color="black", label="app.models", shape="box", style="solid"];
+"app" -> "app.auth" [arrowhead="open", arrowtail="none"];
+"app" -> "app.main" [arrowhead="open", arrowtail="none"];
+"app.auth.views" -> "app.auth.forms" [arrowhead="open", arrowtail="none"];
+"app.decorators" -> "app.models" [arrowhead="open", arrowtail="none"];
+"app.main" -> "app.models" [arrowhead="open", arrowtail="none"];
+"app.main.views" -> "app.main.forms" [arrowhead="open", arrowtail="none"];
+}

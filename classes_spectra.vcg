@@ -1,0 +1,46 @@
+graph:{
+  title:"classes_spectra"
+  layoutalgorithm:dfs
+  late_edge_labels:yes
+  port_sharing:no
+  manhattan_edges:yes
+  node: {title:"app.models.AnonymousUser"  label:"\fbAnonymousUser\fn\n\f__________________\n\f10can()\n\f10is_administrator()"
+  shape:box
+  }
+  node: {title:"app.auth.forms.ChangeEmailForm"  label:"\fbChangeEmailForm\fn\n\f_________________\n\f08email\n\f08password\n\f08submit\n\f_________________\n\f10validate_email()"
+  shape:box
+  }
+  node: {title:"app.auth.forms.ChangePasswordForm"  label:"\fbChangePasswordForm\fn\n\f____________________\n\f08old_password\n\f08password\n\f08password2\n\f08submit\n\f____________________"
+  shape:box
+  }
+  node: {title:"app.main.forms.EditProfileAdminForm"  label:"\fbEditProfileAdminForm\fn\n\f______________________\n\f08about_me\n\f08confirmed\n\f08email\n\f08location\n\f08name\n\f08role\n\f08submit\n\f08user\n\f08username\n\f______________________\n\f10validate_email()\n\f10validate_username()"
+  shape:box
+  }
+  node: {title:"app.main.forms.EditProfileForm"  label:"\fbEditProfileForm\fn\n\f_________________\n\f08about_me\n\f08location\n\f08name\n\f08submit\n\f_________________"
+  shape:box
+  }
+  node: {title:"app.auth.forms.LoginForm"  label:"\fbLoginForm\fn\n\f_____________\n\f08email\n\f08password\n\f08remember_me\n\f08submit\n\f_____________"
+  shape:box
+  }
+  node: {title:"app.main.forms.NameForm"  label:"\fbNameForm\fn\n\f__________\n\f08name\n\f08submit\n\f__________"
+  shape:box
+  }
+  node: {title:"app.auth.forms.PasswordResetForm"  label:"\fbPasswordResetForm\fn\n\f___________________\n\f08password\n\f08password2\n\f08submit\n\f___________________"
+  shape:box
+  }
+  node: {title:"app.auth.forms.PasswordResetRequestForm"  label:"\fbPasswordResetRequestForm\fn\n\f__________________________\n\f08email\n\f08submit\n\f__________________________"
+  shape:box
+  }
+  node: {title:"app.models.Permission"  label:"\fbPermission\fn\n\f________________\n\f08ADMIN : int\n\f08COMMENT : int\n\f08FOLLOW : int\n\f08MODERATE : int\n\f08WRITE : int\n\f________________"
+  shape:box
+  }
+  node: {title:"app.auth.forms.RegistrationForm"  label:"\fbRegistrationForm\fn\n\f___________________\n\f08email\n\f08password\n\f08password2\n\f08submit\n\f08username\n\f___________________\n\f10validate_email()\n\f10validate_username()"
+  shape:box
+  }
+  node: {title:"app.models.Role"  label:"\fbRole\fn\n\f___________________\n\f08default\n\f08default\n\f08id\n\f08name\n\f08permissions\n\f08permissions : int\n\f08users\n\f___________________\n\f10add_permission()\n\f10has_permission()\n\f10insert_roles()\n\f10remove_permission()\n\f10reset_permissions()"
+  shape:box
+  }
+  node: {title:"app.models.User"  label:"\fbUser\fn\n\f_____________________________\n\f08about_me\n\f08confirmed\n\f08confirmed : bool\n\f08email\n\f08email\n\f08id\n\f08last_seen\n\f08last_seen : datetime\n\f08location\n\f08member_since\n\f08name\n\f08password\n\f08password_hash\n\f08password_hash\n\f08role\n\f08role_id\n\f08username\n\f_____________________________\n\f10can()\n\f10change_email()\n\f10confirm()\n\f10generate_confirmation_token()\n\f10generate_email_change_token()\n\f10generate_reset_token()\n\f10is_administrator()\n\f10ping()\n\f10reset_password()\n\f10verify_password()"
+  shape:box
+  }
+}

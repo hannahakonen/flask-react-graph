@@ -1,0 +1,17 @@
+digraph "classes_spectra" {
+rankdir=BT
+charset="utf-8"
+"app.models.AnonymousUser" [color="black", fontcolor="black", label="{AnonymousUser|\l|can(permissions)\lis_administrator()\l}", shape="record", style="solid"];
+"app.auth.forms.ChangeEmailForm" [color="black", fontcolor="black", label="{ChangeEmailForm|email\lpassword\lsubmit\l|validate_email(field)\l}", shape="record", style="solid"];
+"app.auth.forms.ChangePasswordForm" [color="black", fontcolor="black", label="{ChangePasswordForm|old_password\lpassword\lpassword2\lsubmit\l|}", shape="record", style="solid"];
+"app.main.forms.EditProfileAdminForm" [color="black", fontcolor="black", label="{EditProfileAdminForm|about_me\lconfirmed\lemail\llocation\lname\lrole\lsubmit\luser\lusername\l|validate_email(field)\lvalidate_username(field)\l}", shape="record", style="solid"];
+"app.main.forms.EditProfileForm" [color="black", fontcolor="black", label="{EditProfileForm|about_me\llocation\lname\lsubmit\l|}", shape="record", style="solid"];
+"app.auth.forms.LoginForm" [color="black", fontcolor="black", label="{LoginForm|email\lpassword\lremember_me\lsubmit\l|}", shape="record", style="solid"];
+"app.main.forms.NameForm" [color="black", fontcolor="black", label="{NameForm|name\lsubmit\l|}", shape="record", style="solid"];
+"app.auth.forms.PasswordResetForm" [color="black", fontcolor="black", label="{PasswordResetForm|password\lpassword2\lsubmit\l|}", shape="record", style="solid"];
+"app.auth.forms.PasswordResetRequestForm" [color="black", fontcolor="black", label="{PasswordResetRequestForm|email\lsubmit\l|}", shape="record", style="solid"];
+"app.models.Permission" [color="black", fontcolor="black", label="{Permission|ADMIN : int\lCOMMENT : int\lFOLLOW : int\lMODERATE : int\lWRITE : int\l|}", shape="record", style="solid"];
+"app.auth.forms.RegistrationForm" [color="black", fontcolor="black", label="{RegistrationForm|email\lpassword\lpassword2\lsubmit\lusername\l|validate_email(field)\lvalidate_username(field)\l}", shape="record", style="solid"];
+"app.models.Role" [color="black", fontcolor="black", label="{Role|default\ldefault\lid\lname\lpermissions\lpermissions : int\lusers\l|add_permission(perm)\lhas_permission(perm)\linsert_roles()\lremove_permission(perm)\lreset_permissions()\l}", shape="record", style="solid"];
+"app.models.User" [color="black", fontcolor="black", label="{User|about_me\lconfirmed\lconfirmed : bool\lemail\lemail\lid\llast_seen\llast_seen : datetime\llocation\lmember_since\lname\lpassword\lpassword_hash\lpassword_hash\lrole\lrole_id\lusername\l|can(perm)\lchange_email(token)\lconfirm(token)\lgenerate_confirmation_token(expiration)\lgenerate_email_change_token(new_email, expiration)\lgenerate_reset_token(expiration)\lis_administrator()\lping()\lreset_password(token, new_password)\lverify_password(password)\l}", shape="record", style="solid"];
+}

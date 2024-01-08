@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+
+{% block title %}Spectra{% endblock %}
+
+{% block page_content %}
+
+<style>
+    .btn-own,
+    input[type="submit"],
+    #saveToDatabase,
+    .select {
+        display: inline-block;
+        padding: 5px 10px;
+        margin: 8px 0;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        border: 2px solid rgb(114, 98, 130);
+        color: #000000;
+        border-radius: 5px;
+        background-color: rgb(167, 153, 181);
+    }
+
+    .btn-own:hover,
+    input[type="submit"]:hover,
+    #saveToDatabase:hover,
+    .select:hover {
+        background-color: rgb(142, 126, 159);
+    }
+
+    /* Customize the appearance of the dropdown arrow */
+    .select::after {
+        content: '\25BC';
+        /* Unicode character for a downward arrow */
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        pointer-events: none;
+        /* Ensures the arrow doesn't interfere with the click on the select box */
+    }
+
+    /* Hide the actual file input */
+    input[type="file"] {
+        display: none;
+    }
+
+    /* Hide the slider value */
+    #zSlider {
+        width: 100%;
+        /* Make the slider full width */
+        margin: 0;
+        /* Remove default margin */
+    }
+
+    .slider-label {
+        display: none;
+        /* Hide the label */
+    }
+</style>
+<div class="container">
+
+    <div class="row p-4" style="max-width: 500px;">
+        <div class="page-header">
+            <h2>Raman Spectrum Simulator
+            </h2>
+        </div>
+        <div class="card m-auto" style="width: 90;">
+            <div class="card-body">
+                <div>
+                    <p style="max-width: 500px; font-size: 16px">Simulate experimental molecular spectrum from
+                        quantum chemical vibration data</p>
+                </div>
+                <div>
+                    <form method="post" enctype="multipart/form-data">
+                        <!-- Label for the file input -->
+                        <label for="file" class="btn-own">Choose File</label>
+                        <!-- Actual file input (hidden) -->
+                        <input type="file" name="file" id="file" accept=".txt">
+                        <input type="submit" value="Open File">
+                    </form>
+                    {% if current_user.is_authenticated %}
+                    <!--
+                    <select class="select">
+                        <option value="" disabled selected>Open from Database</option>
+                        <option value="option1">Option 1</option>
+                        <option value="option2">Option 2</option>
+                        <option value="option3">Option 3</option>
+                    </select>-->
+                    <select class="select" id="titleDropdown"></select>
+                    <button id="saveToDatabase" onclick="saveToDatabase()">Save to Database</button>
+                    {% endif %}
+
+                </div>
+            </div>
+
+
+            <div id="chart1">
+            </div>
+            <div class="row" style="margin-top: 8px; margin-bottom: 8px;">
+                <div class="col-sm-5"><label for="titleInput">Title</label>
+                    <input type="text" id="titleInput" onchange="changeTitle()">
+                </div>
+                <div class="col-sm-4">
+                    <label for="zSlider">Width</label>
+                    <input type="range" min="1" max="70" step="1" id="zSlider">
+                </div>
+
+                <div class="col-sm-3">
+                    <label for="stemCheckbox">Peaks</label>
+                    <input type="checkbox" id="stemCheckbox" checked onchange="toggleStemPlot()">
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<!-- Include jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+    var graphOriginal = {{ graphJSON | safe }};
+    var graph = graphOriginal;
+    var initialZ = {{ initialZ | safe }};
+    var stemPlotsAdded = true;
+    var stemTraces = graph.data.filter(trace => trace.name && trace.name.startsWith('stemTrace_'));
+
+    function saveToDatabase() {
+        var title = graph.layout.title.text;
+    
+        // Send the data to the server using an AJAX request
+        $.ajax({
+            url: '/save_to_database',
+            type: 'POST',
+            data: {
+                'title': title
+            },
+            success: function(response) {
+                // Handle the response from the server
+                //console.log(response);
+                alert(response.message);
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $.ajax({
+            url: '/get_titles',
+            type: 'GET',
+            success: function(titles) {
+                // The titles parameter contains the titles returned from the server
+                // Use these titles to create the dropdown
+                var dropdown = $('#titleDropdown');
+                dropdown.append($('<option></option>').val('').text('Open from Database'));
+                titles.forEach(function(title) {
+                    dropdown.append($('<option></option>').val(title).text(title));
+                });
+            }
+        });
+    });
+
+    $('#titleDropdown').change(function() {
+        var title = $(this).val();
+    
+        if (title) {
+            $.ajax({
+                url: '/open_from_database',
+                type: 'GET',
+                data: {
+                    'title': title
+                },
+                success: function(response) {
+                    // Convert the plot JSON to a figure
+                    var fig = JSON.parse(response.graphJSON);
+
+                    // Display the figure
+                    Plotly.newPlot('chart1', fig);
+                }
+            });
+        }
+    });
+
+    function displayFileName(input) {
+        var customButton = document.getElementById('customButton');
+        customButton.innerText = input.files[0].name;
+    }
+
+    document.getElementById('zSlider').value = initialZ;
+    //document.getElementById('zValue').innerText = initialZ.toFixed(1);
+
+    //MUUTA addEventListener
+    function toggleStemPlot() {
+        var checkbox = document.getElementById('stemCheckbox');
+
+        // Set visibility based on the checkbox state
+        for (var i = 0; i < stemTraces.length; i++) {
+            stemTraces[i].visible = checkbox.checked ? true : 'legendonly';
+        }
+
+        // Update the plot with the adjusted visibility
+        Plotly.update('chart1', stemTraces, graph.layout);
+    }
+
+    document.getElementById('zSlider').addEventListener('input', function () {
+        var newValue = parseFloat(this.value);
+        //document.getElementById('zValue').innerText = newValue.toFixed(1);
+        newValue = newValue.toString();
+
+        $.ajax({
+            type: 'POST',
+            url: '/update_plot', 
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({ newValue: newValue }),
+            success: function (response) {
+                // Assuming the server responds with the updated plot data
+                var newYValues = response.newYValues;
+
+                //NO SENSE: simulate always the last: index = chart1.data.length - 1
+                if (Array.isArray(newYValues)) {
+                    // Update the plot using Plotly or other plotting library
+                    // Find the index of the trace named "simulated plot"
+                    var simulatedPlotTraceIndex = -1;
+                    for (var i = 0; i < chart1.data.length; i++) {
+                        if (chart1.data[i].name === 'simulated plot') {
+                            simulatedPlotTraceIndex = i;
+                            break;
+                        }
+                    }
+
+                    // Update the "simulated plot" trace
+                    if (simulatedPlotTraceIndex !== -1) {
+                        Plotly.update('chart1', { y: [newYValues] }, {}, [simulatedPlotTraceIndex]);
+                    }
+                } else {
+                    console.error('Invalid newYValues received:', newYValues);
+                }
+            },
+            error: function (error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    function removeStem() {
+        graph.data = graph.data.filter(trace => !trace.name || !trace.name.startsWith('stemTrace_')); /* removes all the stem peaks */
+
+        Plotly.react('chart1', graph, {});
+    }
+
+    //MUUTA addEventListener
+    function changeTitle() {
+        var title = document.getElementById('titleInput').value;
+
+        graph.layout.title.text = title;
+
+        Plotly.react('chart1', graph, {}); //update fiksumpi?
+    }
+
+    // Create the plot using Plotly.plot
+    Plotly.plot('chart1', graph.data, graph.layout); /* {} graph.layout paikalle ilman layout-muutoksia */
+</script>
+{% endblock %}
